@@ -14,4 +14,4 @@ Pillow==9.3.0
 requests==2.28.0
 faiss-cpu==1.7.4
 scipy
-sklearn
+scikit-learn
