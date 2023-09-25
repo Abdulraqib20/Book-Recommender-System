@@ -1,11 +1,1 @@
-# streamlit_app_config.toml
-[general]
-email = "abdulraqibshakir03@gmail.com"
 
-[server]
-headless = true
-enableCORS = false
-port = $PORT
-
-[requirements]
-file = "Book-Recommender-System/requirements.txt"
