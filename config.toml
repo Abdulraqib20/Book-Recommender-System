@@ -8,4 +8,4 @@ enableCORS = false
 port = $PORT
 
 [requirements]
-file = "Book-Recommender-System/Google Books Recommender System/requirements.txt"
+file = "Book-Recommender-System/requirements.txt"
