@@ -33,9 +33,8 @@ st.set_page_config(
 # Center-align subheading and image using HTML <div> tags
 st.markdown(
     """
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-        <h2>Google Books Recommender System</h2>
-
+    <div style="text-align: left;">
+        <h2 style="text-align: left;">Google Books Recommender System</h2>
     </div>
     """,
     unsafe_allow_html=True
@@ -50,13 +49,21 @@ This Application is a book recommender system uses a content-based approach, lev
 
 # Load the data into a DataFrame
 df = pd.read_csv("recommender_books_with_url.csv")
+    
+#  # Export the dataset to Excel format
+# if st.button("Export the Data"):
+#     # Create a BytesIO buffer for writing the Excel file
+#     excel_buffer = BytesIO()
+#     with pd.ExcelWriter(excel_buffer, engine="xlsxwriter") as writer:
+#         df.to_excel(writer, sheet_name="Google_Books", index=False)
 
-# Create a checkbox to toggle the visibility of the DataFrame
-show_data = st.checkbox("Preview Data")
+#                 # Set the filename and download button label
+#     excel_filename = "google_books.xlsx"
+#     st.write(f"Exporting to {excel_filename}...")
 
-# Display the DataFrame if the checkbox is checked
-if show_data:
-    st.dataframe(df)
+#     # Prepare the Excel data for download
+#     excel_data = excel_buffer.getvalue()
+#     st.download_button(label="Click here to download", data=excel_data, file_name=excel_filename, key="excel_download")
     
 # Copy df to df1
 df1 = df.copy()
@@ -173,11 +180,14 @@ def display_books_with_pagination(book_data, items_per_page=5):
         st.markdown(
             f"""
             <div class="book-card">
+                <img src="{book['cover_url']}" alt="Book Cover"> <br>
                 <h5>{book['title']}</h5>
                 <p><strong>Author:</strong> {book['author']}</p>
                 <p><strong>Genre:</strong> {book['genre']}</p>
-                <p><strong>Description:</strong> {book['description']}</p>
-                <img src="{book['cover_url']}" alt="Book Cover">
+                <details>
+                <summary><strong>About Book</strong></summary>
+                <p>{book['description']}</p>
+            </details>
             </div>
             """,
             unsafe_allow_html=True
@@ -419,6 +429,23 @@ if st.button("Search"):
                     display_book_card(book_info)
                 else:
                     st.write("No recommendations to display.")
+
+
+
+# footer
+
+# line separator
+st.markdown('<hr style="border: 2px solid #ddd;">', unsafe_allow_html=True)
+
+# footer text
+st.markdown(
+    """
+    <div style="text-align: center; padding: 10px;">
+        Developed by <a href="https://github.com/Abdulraqib20" target="_blank">raqibcodes</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 
 
