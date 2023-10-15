@@ -1,3 +1,4 @@
+# import libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -44,7 +45,11 @@ st.image("rec1.jpg")
 
 # Add an introductory paragraph
 st.markdown("""
-This Application is a book recommender system uses a content-based approach, leveraging book features to recommend similar books to users based on features of the books or characteristics of the items and the user's preferences.
+Welcome to my Book Recommender Web-App!
+
+Are you in search of your next captivating read? This application is here to assist! A clever system is utilized to analyze your preferences in a book. Aspects such as plot, characters, and themes that truly engage you are taken into consideration. Subsequently, book recommendations are provided that align with your tastes.
+
+Picture having a friend who is familiar with all your preferred genres and authors. They can suggest books that will likely resonate with you. That's precisely what is achieved here, but in the form of an app! So, if thrilling mysteries, heartwarming romances, epic fantasies, or insightful biographies are what you fancy, your preferences are catered to. Happy reading!
 """)
 
 # Load the data into a DataFrame
@@ -140,8 +145,22 @@ st.markdown(
 )
     
 # Pagination function
+# Pagination function with genre selection
 def display_books_with_pagination(book_data, items_per_page=5):
-    total_books = len(book_data)
+    # Get unique genres
+    unique_genres = df['genre'].unique()
+
+    # Add a dropdown to select genre
+    selected_genre = st.sidebar.selectbox("Select Genre", ['All'] + list(unique_genres))
+
+    if selected_genre != 'All':
+        # Filter books by the selected genre
+        filtered_books = [book for book in book_data if book['genre'] == selected_genre]
+        total_books = len(filtered_books)
+    else:
+        filtered_books = book_data
+        total_books = len(filtered_books)
+
     num_pages = (total_books + items_per_page - 1) // items_per_page
 
     page = st.sidebar.slider("Section", 1, num_pages, 1)
@@ -149,7 +168,8 @@ def display_books_with_pagination(book_data, items_per_page=5):
     start_idx = (page - 1) * items_per_page
     end_idx = start_idx + items_per_page
 
-    st.write(f"Section {page}/{num_pages}:")
+    # st.write(f"Section {page}/{num_pages} for Genre: {selected_genre}:")
+    st.write(f"Section {page}/{num_pages} for Genre➡  <span style='font-family: Cursive;'>{selected_genre}</span>", unsafe_allow_html=True)
 
     # Custom CSS for styling
     st.markdown(
@@ -176,7 +196,7 @@ def display_books_with_pagination(book_data, items_per_page=5):
     )
 
     for i in range(start_idx, min(end_idx, total_books)):
-        book = book_data[i]
+        book = filtered_books[i]
         st.markdown(
             f"""
             <div class="book-card">
@@ -192,10 +212,12 @@ def display_books_with_pagination(book_data, items_per_page=5):
             """,
             unsafe_allow_html=True
         )
+
+# Call the function
 book_data = df.to_dict('records')
 
-# sidebar title
-st.sidebar.title("Drag the Slider to display all books")
+# Sidebar title
+st.sidebar.title("Select Genre and Drag the Slider to Display Books")
 display_books_with_pagination(book_data)
 
 # # Custom CSS for styling
@@ -446,6 +468,3 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-
-
